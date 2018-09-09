@@ -31,7 +31,9 @@ function rdfile() {
 	for (i = 0; i < loc.length; i++) {
 	    if(loc[i] !== 'doc.js') {
 		if(loc[i].charAt(0) !== '.') {
-		    var htmlOutput = htmlOutput + '<br><div id="id' + [i] + '" class="img-wrappers">\n<img src="' + loc[i] + '" alt="Screen-Shot-' + [i] + '" style="width:' + width + ';height:' + height + ';" />\n</div>\n';
+		    // Using the WYSIWYG editor: "PageEdit" in Google Chrome, a paragraph will be added between images
+		    // if the below html line starts with a "<br>" tag. Uncomment it if that is the desired behavior.
+		    var htmlOutput = htmlOutput + '<!--br--><div id="id' + [i] + '" class="img-wrappers">\n<img src="' + loc[i] + '" alt="Screen-Shot-' + [i] + '" style="width:' + width + ';height:' + height + ';" />\n</div>\n';
 		}
 	    }
 	}
@@ -44,9 +46,9 @@ function startServer() {
 	    var stream = fs.createReadStream(path.join(basePath, req.url));
 	    stream.on('error', function() {
 		// The html document properties can be customized with html/css here.
-		    // Edit any HTML page in Chrome with this powerful WYSIWYG editor
-		    // WYSIWYG editor:  https://chrome.google.com/webstore/detail/pageedit/ebkclgoaabaibghklgknnjdemknjaeic?utm_source=chrome-ntp-icon
-	        res.write('<!DOCTYPE html>\n<html>\n<head>\n<title>Doc</title>\n<style>\nbody {margin: 0 auto; max-width: 808px; font-family: Arial,"Helvetica Neue",Helvetica,sans-serif; font-size: 12pt;} \np {text-indent: 2em;}\n.img-wrappers   { /*border: solid black 1px;*/ font-style: italic;}\n</style>\n</head>\n<body>\n' + htmlOutput + '</body>\n</html>\n');
+		// Edit any HTML page in Chrome with this powerful WYSIWYG editor
+		// Get "PageEdit" WYSIWYG editor:  https://chrome.google.com/webstore/detail/pageedit/ebkclgoaabaibghklgknnjdemknjaeic?utm_source=chrome-ntp-icon
+	        res.write('<!DOCTYPE html>\n<html>\n<head>\n<title>Doc</title>\n<style>\nbody {margin: 0 auto; max-width: 808px; font-family: Arial,"Helvetica Neue",Helvetica,sans-serif; font-size: 12pt;} \np {text-indent: 2em;}\n.img-wrappers   { /*border: solid black 1px;*/ /*font-style: italic;*/}\n</style>\n</head>\n<body>\n' + htmlOutput + '</body>\n</html>\n');
 	        res.end();
 	    });
 	    stream.pipe(res);
